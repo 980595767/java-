@@ -1,0 +1,58 @@
+package Test;
+
+import javafx.application.Application;
+import javafx.beans.property.DoubleProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Ellipse;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+public class test1 extends Application {
+   public void start(Stage args) {
+      GridPane gridPane=new GridPane();
+      gridPane.setPadding(new Insets(11,12,13,14));
+      Label lab1=new Label("Mile");
+      Label lab2=new Label("Kilometer");
+      TextField text1=new TextField();
+      TextField text2=new TextField();
+      text1.setAlignment(Pos.BASELINE_RIGHT);
+      text2.setAlignment(Pos.BASELINE_RIGHT);
+
+      gridPane.add(lab1,0,0);
+      gridPane.add(lab2,0,1);
+      gridPane.add(text1,1,0);
+      gridPane.add(text2,1,1);
+
+      text1.setOnAction(e->{
+         double mile = Double.parseDouble(text1.getText());
+         double kilometer = mile * 1.602307322544464;
+         text2.setText("" + kilometer);
+      });
+
+      text2.setOnAction(e->{
+         double km=Double.parseDouble(text2.getText());
+         double mile=km/1.602307322544464;
+         text1.setText(""+mile);
+      });
+
+      Scene scene=new Scene(gridPane);
+      args.setTitle("excerse");
+      args.setScene(scene);
+      args.show();
+
+
+   }
+}
+
