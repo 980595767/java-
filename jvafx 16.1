@@ -1,0 +1,95 @@
+package Test;
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+public class test1 extends Application {
+   public void start(Stage args) {
+      Text text = new Text("Programming is fun");
+      text.setFont(Font.font("Times new Roman", FontWeight.BOLD, FontPosture.REGULAR, 36));
+      text.setX(100);
+      text.setY(80);
+      Pane pane = new Pane();
+      pane.getChildren().add(text);
+      pane.setStyle("-fx-border-color: black");
+
+      Button btleft = new Button("<=");
+      Button btright = new Button("=>");
+      HBox movePane = new HBox(20);
+      movePane.setAlignment(Pos.BOTTOM_CENTER);
+      movePane.getChildren().addAll(btleft, btright);
+
+      RadioButton btRed = new RadioButton("Red");
+      RadioButton btYellow = new RadioButton("Yellow");
+      RadioButton btBlack = new RadioButton("Black");
+      RadioButton btOrange = new RadioButton("Orange");
+      RadioButton btGreen = new RadioButton("Green");
+      HBox colorPane = new HBox(10);
+      colorPane.setAlignment(Pos.TOP_CENTER);
+      colorPane.getChildren().addAll(btRed, btYellow, btBlack, btOrange, btGreen);
+
+      ToggleGroup group = new ToggleGroup();
+      btRed.setToggleGroup(group);
+      btYellow.setToggleGroup(group);
+      btBlack.setToggleGroup(group);
+      btOrange.setToggleGroup(group);
+      btGreen.setToggleGroup(group);
+
+      BorderPane bPane = new BorderPane();
+      bPane.setTop(colorPane);
+      bPane.setBottom(movePane);
+      bPane.setCenter(pane);
+
+      btRed.setOnAction(e->{
+         if(btRed.isSelected())
+            text.setFill(Color.RED);
+         else text.setFill(Color.BLACK);
+      });
+      btYellow.setOnAction(e->{
+         if(btYellow.isSelected())
+            text.setFill(Color.YELLOW);
+         else text.setFill(Color.BLACK);
+      });
+      btBlack.setOnAction(e->{
+         text.setFill(Color.BLACK);}
+      );
+      btOrange.setOnAction(e->{
+         if(btOrange.isSelected())
+            text.setFill(Color.ORANGE);
+         else text.setFill(Color.BLACK);
+      });
+      btYellow.setOnAction(e->{
+         if(btGreen.isSelected())
+            text.setFill(Color.GREEN);
+         else text.setFill(Color.BLACK);
+      });
+
+      btleft.setOnAction(e->{
+         text.setX(text.getX()-10);
+      });
+      btright.setOnAction(e->{
+         text.setX(text.getX()+10);
+      });
+      Scene scene = new Scene(bPane, 500, 200);
+      args.setTitle("Exercis");
+      args.setScene(scene);
+      args.show();
+
+   }
+}
+
