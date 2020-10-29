@@ -1,0 +1,195 @@
+package Test;
+
+import javafx.application.Application;
+import javafx.beans.property.DoubleProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Ellipse;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.beans.Observable;
+import javafx.beans.InvalidationListener;
+
+public class test1 extends Application {
+   @Override
+   public void start(Stage args) {
+   ClockPane clock=new ClockPane();
+   HBox hBox=new HBox(10);
+
+   Label hour=new Label("Hour");
+   Label minute=new Label("Minute");
+   Label second=new Label("Second");
+
+   TextField h=new TextField();
+   TextField m=new TextField();
+   TextField s=new TextField();
+   h.setPrefColumnCount(5);
+   m.setPrefColumnCount(5);
+   s.setPrefColumnCount(5);
+
+   hBox.getChildren().addAll(hour,h,minute,m,second,s);
+
+   BorderPane borderPane=new BorderPane();
+   borderPane.setCenter(clock);
+   borderPane.setBottom(hBox);
+
+      h.setOnAction(e -> {
+         Integer i = Integer.parseInt(h.getText());
+         if (i >= 0 && i <= 12)
+         {
+            clock.setHour(i);
+         }
+         else
+            h.setText("Illegal");
+      });
+
+      m.setOnAction(e -> {
+         Integer i = Integer.parseInt(m.getText());
+         if (i >= 0 && i <= 60)
+         {
+            clock.setMinute(i);
+         }
+         else
+            m.setText("Illegal");
+      });
+
+      s.setOnAction(e -> {
+         Integer i = Integer.parseInt(s.getText());
+         if (i >= 0 && i <= 60)
+         {
+            clock.setSecond(i);
+         }
+         else
+            s.setText("Illegal");
+      });
+
+   hBox.setAlignment(Pos.CENTER);
+
+      borderPane.widthProperty().addListener(e->
+      {
+            clock.setW(borderPane.getWidth());
+      });
+
+      borderPane.heightProperty().addListener(e->
+      { clock.setH(borderPane.getHeight());});
+
+      Scene scene=new Scene(borderPane);
+   args.setScene(scene);
+   args.setTitle("clock");
+   args.show();
+
+   }
+}
+
+////////////////////////////////////////////////////////////////
+package Test;
+
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Line;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.shape.Circle;
+
+public class ClockPane extends Pane
+{
+    private int hour;
+    private int minute;
+    private int second;
+
+    private double w = 250, h = 250;
+
+    public ClockPane()
+    {
+        this(0, 0, 0);
+    }
+
+    public ClockPane(int hour, int minute, int second)
+    {
+        this.hour = hour;
+        this.minute = minute;
+        this.second = second;
+        paintClock();
+    }
+
+    public void setHour(int hour)
+    {
+        this.hour = hour;
+        paintClock();
+    }
+
+    public void setMinute(int minute)
+    {
+        this.minute = minute;
+        paintClock();
+    }
+
+    public void setSecond(int second)
+    {
+        this.second = second;
+        paintClock();
+    }
+
+    public void setH(double h)
+    {
+        this.h = h;
+        paintClock();
+    }
+
+    public void setW(double w)
+    {
+        this.w = w;
+        paintClock();
+    }
+
+    public void paintClock()
+    {
+        double centerX = w / 2;
+        double centerY = h / 2;
+        double clockRadius = Math.min(h, w) * 0.8 * 0.5;
+
+        Circle circle = new Circle(centerX, centerY, clockRadius);
+        circle.setFill(Color.WHITE);
+        circle.setStroke(Color.BLACK);
+        double lS = clockRadius * 0.8;
+        double sDegree = second * Math.PI * 2 / 60;
+        Line sL = new Line(centerX, centerY, centerX + lS * Math.sin(sDegree), centerY - lS * Math.cos(sDegree));
+        sL.setStroke(Color.RED);
+
+        double lM = clockRadius * 0.65;
+        double mDegree = minute * Math.PI * 2 / 60;
+        Line mL = new Line(centerX, centerY, centerX + lM * Math.sin(mDegree), centerY - lM * Math.cos(mDegree));
+        mL.setStroke(Color.BLUE);
+
+        double lH = clockRadius * 0.6;
+        double hDegree = (hour + minute / 60) * Math.PI * 2 / 12;
+        Line hL = new Line(centerX, centerY, centerX + lH * Math.sin(hDegree), centerY - lH * Math.cos(hDegree));
+        hL.setStroke(Color.GREEN);
+
+        Text text12 = new Text("12");
+        text12.setX(centerX - 5);
+        text12.setY(centerY - clockRadius + 15);
+        Text text3 = new Text("3");
+        text3.setX(centerX + clockRadius - 15);
+        text3.setY(centerY);
+        Text text6 = new Text("6");
+        text6.setX(centerX - 3);
+        text6.setY(centerY + clockRadius - 5);
+        Text text9 = new Text("9");
+        text9.setX(centerX - clockRadius + 5);
+        text9.setY(centerY);
+        this.getChildren().clear();
+        this.getChildren().addAll(circle, sL, mL, hL);
+        this.getChildren().addAll(text12, text3, text6, text9);
+    }
+}
